@@ -1,0 +1,129 @@
+ apiVersion: v1
+kind: Node
+metadata:
+  annotations:
+    flannel.alpha.coreos.com/backend-data: '{"VtepMAC":"16:bf:7e:c7:2e:c3"}'
+    flannel.alpha.coreos.com/backend-type: vxlan
+    flannel.alpha.coreos.com/kube-subnet-manager: "true"
+    flannel.alpha.coreos.com/public-ip: 192.168.5.20
+    node.alpha.kubernetes.io/ttl: "0"
+    projectcalico.org/IPv4IPIPTunnelAddr: 10.42.0.1
+    rke.cattle.io/external-ip: 192.168.5.20
+    rke.cattle.io/internal-ip: 192.168.5.20
+    volumes.kubernetes.io/controller-managed-attach-detach: "true"
+  creationTimestamp: "2019-10-31T18:26:54Z"
+  labels:
+    beta.kubernetes.io/arch: amd64
+    beta.kubernetes.io/os: linux
+    kubernetes.io/arch: amd64
+    kubernetes.io/hostname: ranchercontroller0
+    kubernetes.io/os: linux
+    node-role.kubernetes.io/controlplane: "true"
+    node-role.kubernetes.io/etcd: "true"
+  name: ranchercontroller0
+  resourceVersion: "433105"
+  selfLink: /api/v1/nodes/ranchercontroller0
+  uid: 5f3847d7-dac2-4cae-9659-29a83c6cb035
+spec:
+  podCIDR: 10.42.0.0/24
+  taints:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/controlplane
+    value: "true"
+  - effect: NoExecute
+    key: node-role.kubernetes.io/etcd
+    value: "true"
+status:
+  addresses:
+  - address: 192.168.5.20
+    type: InternalIP
+  - address: ranchercontroller0
+    type: Hostname
+  allocatable:
+    cpu: "2"
+    ephemeral-storage: "48294789041"
+    hugepages-2Mi: "0"
+    memory: 7907156Ki
+    pods: "110"
+  capacity:
+    cpu: "2"
+    ephemeral-storage: 51175Mi
+    hugepages-2Mi: "0"
+    memory: 8009556Ki
+    pods: "110"
+  conditions:
+  - lastHeartbeatTime: "2019-11-03T16:47:02Z"
+    lastTransitionTime: "2019-10-31T18:26:54Z"
+    message: kubelet has sufficient memory available
+    reason: KubeletHasSufficientMemory
+    status: "False"
+    type: MemoryPressure
+  - lastHeartbeatTime: "2019-11-03T16:47:02Z"
+    lastTransitionTime: "2019-10-31T18:26:54Z"
+    message: kubelet has no disk pressure
+    reason: KubeletHasNoDiskPressure
+    status: "False"
+    type: DiskPressure
+  - lastHeartbeatTime: "2019-11-03T16:47:02Z"
+    lastTransitionTime: "2019-10-31T18:26:54Z"
+    message: kubelet has sufficient PID available
+    reason: KubeletHasSufficientPID
+    status: "False"
+    type: PIDPressure
+  - lastHeartbeatTime: "2019-11-03T16:47:02Z"
+    lastTransitionTime: "2019-10-31T18:27:45Z"
+    message: kubelet is posting ready status
+    reason: KubeletReady
+    status: "True"
+    type: Ready
+  daemonEndpoints:
+    kubeletEndpoint:
+      Port: 10250
+  images:
+  - names:
+    - rancher/hyperkube@sha256:ef8c84ce6794d5c8af0b0388d152a97ee91d9c9623fff5fac587f5480886cea1
+    - rancher/hyperkube:v1.15.5-rancher1
+    sizeBytes: 1153027111
+  - names:
+    - rancher/rancher-agent@sha256:2d48b69a3fe34ff15fd0cf11f3beb9b57e3add7e498b9ed2c08c349a681958bd
+    - rancher/rancher-agent:v2.3.2
+    sizeBytes: 288122711
+  - names:
+    - rancher/calico-node@sha256:03b19df015ec51dafaf864f222b7b328bf7fb58db16574cc6bbff0ed38e0d936
+    - rancher/calico-node:v3.7.4
+    sizeBytes: 154635854
+  - names:
+    - rancher/calico-cni@sha256:f7ef26dca9f6ae9da495c306312c2972bfcb7f3eb8bb4f5a48eb748c1615f76b
+    - rancher/calico-cni:v3.7.4
+    sizeBytes: 135366007
+  - names:
+    - rancher/rke-tools@sha256:5ba11ee413defe9f0d50934a02880c579bc251b04fc9d43a3741a860d844895e
+    - rancher/rke-tools:v0.1.50
+    sizeBytes: 131669557
+  - names:
+    - rancher/coreos-flannel@sha256:bd76b84c74ad70368a2341c2402841b75950df881388e43fc2aca000c546653a
+    - rancher/coreos-flannel:v0.11.0
+    sizeBytes: 52567296
+  - names:
+    - rancher/coreos-etcd@sha256:b2100f7b0dbd592e6e81689ac607055ed80f0bdbde7e29d24b4decf4cca63ea9
+    - rancher/coreos-etcd:v3.3.10-rancher1
+    sizeBytes: 39468433
+  - names:
+    - rancher/prom-node-exporter@sha256:c390c8fea4cd362a28ad5070aedd6515aacdfdffd21de6db42ead05e332be5a9
+    - rancher/prom-node-exporter:v0.17.0
+    sizeBytes: 20982005
+  - names:
+    - rancher/pause@sha256:d22591b61e9c2b52aecbf07106d5db313c4f178e404d660b32517b18fcbf0144
+    - rancher/pause:3.1
+    sizeBytes: 742472
+  nodeInfo:
+    architecture: amd64
+    bootID: 30af33e8-ab66-491a-ae50-55d78176f499
+    containerRuntimeVersion: docker://19.3.4
+    kernelVersion: 3.10.0-957.el7.x86_64
+    kubeProxyVersion: v1.15.5
+    kubeletVersion: v1.15.5
+    machineID: 311936e2303b034fe7ef70182235b8cb
+    operatingSystem: linux
+    osImage: CentOS Linux 7 (Core)
+    systemUUID: B5251742-9A34-9983-EDAA-4A5964C156C0
