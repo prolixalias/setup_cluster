@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: docker
+  namespace: localdev
+spec:
+  containers:
+  - name: docker
+    image: docker:stable
+    securityContext:
+      privileged: true
+    command:
+      - sleep
+      - "3600"
+    volumeMounts:
+      - name: dockersock
+        mountPath: "/var/run/docker.sock"
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always
+  volumes:
+    - name: dockersock
+      hostPath:
+        path: /var/run/docker.sock

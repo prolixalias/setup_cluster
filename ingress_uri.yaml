@@ -1,0 +1,35 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: localdev-uri
+  namespace: localdev
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    #traefik.ingress.kubernetes.io/auth-type: "basic"
+    #traefik.ingress.kubernetes.io/auth-tls-insecure: "true"
+    #traefik.ingress.kubernetes.io/frontend-entry-points: "http,https"
+    traefik.ingress.kubernetes.io/app-root: "/"
+    traefik.ingress.kubernetes.io/rule-type: "PathPrefixStrip"
+    traefik.ingress.kubernetes.io/rewrite-target: "/"
+spec:
+  rules:
+  - host: apps.localdev
+    http:
+      paths:
+      - path: /jenkins
+        backend:
+          serviceName: jenkins
+          servicePort: 8080
+      - path: /gitlab
+        backend:
+          serviceName: gitlab
+          servicePort: 8080
+      - path: /registry
+        backend:
+          serviceName: docker-registry
+          servicePort: 5000
+      - path: /charts
+        backend:
+          serviceName: chartmuseum-chartmuseum
+          servicePort: 8080
