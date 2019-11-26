@@ -14,6 +14,8 @@
 clusterZone: "cluster.local"
 
 master:
+  #env:
+  #  - JENKINS_OPTS="--prefix=/jenkins"
   componentName: "jenkins-master"
   image: "jenkins/jenkins"
   tag: "lts"
