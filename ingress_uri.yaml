@@ -21,10 +21,10 @@ spec:
         backend:
           serviceName: jenkins
           servicePort: 8080
-      - path: /gitlab
+      - path: /gitea
         backend:
-          serviceName: gitlab
-          servicePort: 8080
+          serviceName: gitea-http
+          servicePort: 3000
       - path: /registry
         backend:
           serviceName: docker-registry

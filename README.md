@@ -3,6 +3,7 @@
 # get minikube running
 minikube start --cpus 3 --memory 8192                               # k8s v1.16.2 default as of 07NOV2019
 minikube start --cpus 3 --memory 8192 --kubernetes-version v1.14.7  # k8s v1.14.7 aligns with UCP v2.3.2
+minikube start --cpus 3 --memory 8192 --kubernetes-version=1.17.2
 
 # start dashboard in the background:
 minikube dashboard &
@@ -57,13 +58,17 @@ helm repo add stable https://kubernetes-charts.storage.googleapis.com
 helm repo update
 helm install --name chartmuseum stable/chartmuseum --set service.type=NodePort --namespace localdev
 
-# setup gitlab:
-helm repo add gitlab https://charts.gitlab.io
+# setup gitea:
+helm repo add k8s-land http://charts.k8s.land
 helm repo update
-helm search -l gitlab/gitlab
+helm show values k8s-land/gitea > values-gitea.yaml
 #helm get values gitlab > gitlab-values.yaml
-helm upgrade --install gitlab gitlab/gitlab --timeout 600 -f values-gitlab.yaml --namespace localdev
-printf $(kubectl get secret gitlab-gitlab-initial-root-password -o jsonpath='{.data.password}' --namespace localdev | base64 --decode); echo
+#vim values.yaml # Edit to enable persistent storage
+helm install gitea k8s-land/gitea -f values-gitea.yaml --namespace localdev
+#kubectl get svc -w gitea-gitea-ssh --namespace localdev
+#export SERVICE_IP=$(kubectl get svc --namespace localdev gitea-gitea-ssh -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+#echo http://$SERVICE_IP/
+#printf $(kubectl get secret gitlab-gitlab-initial-root-password -o jsonpath='{.data.password}' --namespace localdev | base64 --decode); echo
 
 
 

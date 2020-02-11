@@ -17,7 +17,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: gitlab-pv
+  name: gitea-pv
   namespace: localdev
 spec:
   storageClassName: standard
@@ -27,7 +27,7 @@ spec:
     storage: 20Gi
   persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: /data/gitlab/
+    path: /data/gitea/
 ---
 apiVersion: v1
 kind: PersistentVolume

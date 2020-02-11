@@ -15,13 +15,13 @@ spec:
         backend:
           serviceName: jenkins
           servicePort: 8080
-  - host: gitlab.localdev
+  - host: gitea.localdev
     http:
       paths:
       - path: /
         backend:
-          serviceName: gitlab
-          servicePort: 8080
+          serviceName: gitea
+          servicePort: 3000
   - host: registry.localdev
     http:
       paths:
