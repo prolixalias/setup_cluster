@@ -7,18 +7,17 @@ minikube start --cpus 3 --memory 8192 --kubernetes-version v1.14.7  # k8s v1.14.
 minikube start --cpus 3 --memory 8192 --kubernetes-version=1.17.2
 ```
 
-### start dashboard in the background:
+### start dashboard in the background
 ```bash
 minikube dashboard &
 ```
 
 ### configure helm 
 ```bash
-#kubectl apply -f tiller_sa_crb.yaml # tiller is deprecated in v3
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 ```
 
-### install traefik:
+### install traefik
 ```bash
 helm install traefik stable/traefik --set dashboard.enabled=true,serviceType=NodePort,dashboard.domain=traefik.localdev,rbac.enabled=true --namespace kube-system
 kubectl describe svc traefik --namespace kube-system
@@ -48,7 +47,7 @@ kubectl apply -f docker.yaml
 
 ### test docker pod
 ```bash
-kubectl exec -ti docker -n localdev sh
+kubectl exec -ti docker --namespace localdev sh
 ```
 
 ### use minikube docker env
@@ -68,23 +67,23 @@ kubectl apply -f pv.yaml
 
 ### setup registry
 ```bash
-helm install --name docker-registry stable/docker-registry --set service.type=NodePort --namespace localdev
+helm install docker-registry stable/docker-registry --set service.type=NodePort --namespace localdev
 ```
 
 ### setup jenkins master (default namespace):
 ```bash
 #  jenkins slaves, one for build/deploy (localdev namespace):
 #  use jenkins k8s plugin
-helm install --name jenkins -f values-jenkins.yaml stable/jenkins --namespace localdev
+helm install jenkins -f values-jenkins.yaml stable/jenkins --namespace localdev
 printf $(kubectl get secret --namespace localdev jenkins -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode); echo
-# add 'http://jenkins.localdev.svc.cluster.local:8080' as 'Jenkins URL' in 'Manage Jenkins' section
+# add 'http://jenkins.localdev.svc.cluster.local:8080' as 'Jenkins URL' in 'Manage Jenkins | Configure System'
 ```
 
 ### setup chart museum
 ```bash
-helm repo add stable https://kubernetes-charts.storage.googleapis.com
-helm repo update
-helm install --name chartmuseum stable/chartmuseum --set service.type=NodePort --namespace localdev
+#helm repo add stable https://kubernetes-charts.storage.googleapis.com
+#helm repo update
+helm install chartmuseum stable/chartmuseum --set service.type=NodePort --namespace localdev
 ```
 
 ### setup gitea:
