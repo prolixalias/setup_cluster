@@ -1,64 +1,94 @@
 
 
-# get minikube running
+### get minikube running
+```bash
 minikube start --cpus 3 --memory 8192                               # k8s v1.16.2 default as of 07NOV2019
 minikube start --cpus 3 --memory 8192 --kubernetes-version v1.14.7  # k8s v1.14.7 aligns with UCP v2.3.2
 minikube start --cpus 3 --memory 8192 --kubernetes-version=1.17.2
+```
 
-# start dashboard in the background:
+### start dashboard in the background:
+```bash
 minikube dashboard &
+```
 
-# get helm/tiller running
-kubectl apply -f tiller_sa_crb.yaml
-helm init # wait for tiller pod to start in kube-system namespace
-kubectl get pods -n kube-system
+### configure helm 
+```bash
+#kubectl apply -f tiller_sa_crb.yaml # tiller is deprecated in v3
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+```
 
-# install traefik:
-helm install stable/traefik --name traefik --set dashboard.enabled=true,serviceType=NodePort,dashboard.domain=traefik.localdev,rbac.enabled=true --namespace kube-system
+### install traefik:
+```bash
+helm install traefik stable/traefik --set dashboard.enabled=true,serviceType=NodePort,dashboard.domain=traefik.localdev,rbac.enabled=true --namespace kube-system
 kubectl describe svc traefik --namespace kube-system
 # put: "$(minikube ip) traefik.localdev" in /etc/hosts
 # visit http://$(minikube ip):NodePort/
+```
 
-# create namespace(s)
+### create namespace(s)
+```bash
 kubectl apply -f namespaces.yaml
+```
 
-# add ingress for host-based resolution
+### add ingress for host-based resolution
+```bash
 kubectl apply -f ingress_host.yaml
+```
 
-# add ingress for URI-based translation
+### add ingress for URI-based translation
+```bash
 kubectl apply -f ingress_uri.yaml
+```
 
-# install docker pod
+### install docker pod
+```bash
 kubectl apply -f docker.yaml
+```
 
-# test docker pod
+### test docker pod
+```bash
 kubectl exec -ti docker -n localdev sh
+```
 
-# use minikube docker env
+### use minikube docker env
+```bash
 eval $(minikube docker-env)
+```
 
-# leave minikube docker env
+### leave minikube docker env
+```bash
 eval $(minikube docker-env -u)
+```
 
-# create persistent volume(s)
+### create persistent volume(s)
+```bash
 kubectl apply -f pv.yaml
+```
 
-# setup registry
+### setup registry
+```bash
 helm install --name docker-registry stable/docker-registry --set service.type=NodePort --namespace localdev
+```
 
-# setup jenkins master (default namespace):
+### setup jenkins master (default namespace):
+```bash
 #  jenkins slaves, one for build/deploy (localdev namespace):
 #  use jenkins k8s plugin
 helm install --name jenkins -f values-jenkins.yaml stable/jenkins --namespace localdev
 printf $(kubectl get secret --namespace localdev jenkins -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode); echo
 # add 'http://jenkins.localdev.svc.cluster.local:8080' as 'Jenkins URL' in 'Manage Jenkins' section
+```
 
-# setup chart museum
+### setup chart museum
+```bash
 helm repo add stable https://kubernetes-charts.storage.googleapis.com
 helm repo update
 helm install --name chartmuseum stable/chartmuseum --set service.type=NodePort --namespace localdev
+```
 
-# setup gitea:
+### setup gitea:
+```bash
 helm repo add k8s-land http://charts.k8s.land
 helm repo update
 helm show values k8s-land/gitea > values-gitea.yaml
@@ -69,7 +99,7 @@ helm install gitea k8s-land/gitea -f values-gitea.yaml --namespace localdev
 #export SERVICE_IP=$(kubectl get svc --namespace localdev gitea-gitea-ssh -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 #echo http://$SERVICE_IP/
 #printf $(kubectl get secret gitlab-gitlab-initial-root-password -o jsonpath='{.data.password}' --namespace localdev | base64 --decode); echo
-
+```
 
 
 Prepare Your Applications:
