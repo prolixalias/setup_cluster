@@ -2,8 +2,7 @@
 
 ### get minikube running
 ```bash
-minikube start --cpus 3 --memory 8192                               # k8s v1.16.2 default as of 07NOV2019
-minikube start --cpus 3 --memory 8192 --kubernetes-version v1.14.7  # k8s v1.14.7 aligns with UCP v2.3.2
+minikube start --cpus 3 --memory 8192 --kubernetes-version=1.14.7  # k8s v1.14.7 aligns with UCP v2.3.2
 minikube start --cpus 3 --memory 8192 --kubernetes-version=1.17.2
 ```
 
@@ -12,7 +11,7 @@ minikube start --cpus 3 --memory 8192 --kubernetes-version=1.17.2
 minikube dashboard &
 ```
 
-### configure helm 
+### add stable repo to helm 
 ```bash
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 ```
@@ -83,7 +82,7 @@ printf $(kubectl get secret --namespace localdev jenkins -o jsonpath="{.data.jen
 ```bash
 #helm repo add stable https://kubernetes-charts.storage.googleapis.com
 #helm repo update
-helm install chartmuseum stable/chartmuseum --set service.type=NodePort --namespace localdev
+helm install chartmuseum stable/chartmuseum -f values-chartmuseum.yaml --namespace localdev
 ```
 
 ### setup gitea:
@@ -92,7 +91,7 @@ helm repo add k8s-land http://charts.k8s.land
 helm repo update
 helm show values k8s-land/gitea > values-gitea.yaml
 #helm get values gitlab > gitlab-values.yaml
-#vim values.yaml # Edit to enable persistent storage
+#vim values.yaml # Edit to enable persistent storage and such
 helm install gitea k8s-land/gitea -f values-gitea.yaml --namespace localdev
 #kubectl get svc -w gitea-gitea-ssh --namespace localdev
 #export SERVICE_IP=$(kubectl get svc --namespace localdev gitea-gitea-ssh -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
